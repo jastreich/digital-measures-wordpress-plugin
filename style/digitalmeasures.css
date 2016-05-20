@@ -1,0 +1,10 @@
+/* ::: Digital MEasures Data
+-------------------------------------- */
+  .publication, .presentation{margin-bottom:1.8em;}
+  .publication i, .presentation i{font-style:italic;}
+  .degree > .degree_level, .degree > .subject{font-weight:bold;}
+  .degree > .subject:after{content:','}
+  .degree > .withafter:after{content:','}
+  .degree > *{white-space:nowrap}
+  .degree:last-child{margin-bottom:1em;}
+
