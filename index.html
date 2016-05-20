@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <link href='https://fonts.googleapis.com/css?family=Chivo:900' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/github-dark.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="stylesheets/print.css" media="print">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <title>Digital Measures WordPress Plugin by jastreich</title>
+  </head>
+
+  <body>
+    <div id="container">
+      <div class="inner">
+
+        <header>
+          <h1>Digital Measures WordPress Plugin</h1>
+          <h2>WordPress Plugin to display Digital Measures&#39;s Activity Insight activities on WordPress pages.</h2>
+        </header>
+
+        <section id="downloads" class="clearfix">
+          <a href="https://github.com/jastreich/digital-measures-wordpress-plugin/zipball/master" id="download-zip" class="button"><span>Download .zip</span></a>
+          <a href="https://github.com/jastreich/digital-measures-wordpress-plugin/tarball/master" id="download-tar-gz" class="button"><span>Download .tar.gz</span></a>
+          <a href="https://github.com/jastreich/digital-measures-wordpress-plugin" id="view-on-github" class="button"><span>View on GitHub</span></a>
+        </section>
+
+        <hr>
+
+        <section id="main_content">
+          <h1>
+<a id="digital-measures-wordpress-plugin" class="anchor" href="#digital-measures-wordpress-plugin" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Digital Measures Wordpress plugin</h1>
+
+<p>This plugin allows higher educational institutions who use Digital Measures' Activity Insight to pull data using the web API (Web Services).
+Then use that to populate faculty publication citations, educational acheivements (degrees), and presentation citations, in MLA and APA citation standards using shortcodes.</p>
+
+<h2>
+<a id="license" class="anchor" href="#license" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>License</h2>
+
+<p>General Public License version 2. </p>
+
+<h2>
+<a id="setup" class="anchor" href="#setup" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Setup</h2>
+
+<p>Install files to the <code>/wp-content/plugins/digitalmeasures/</code> directory.</p>
+
+<p>Add the following to your <code>wp-config.php</code>, or copy or move config.inc.php to <code>wp-content/digitalmeasures/config.inc.php</code>.
+Then edit that file to reflect your Digital Measures' Web Services Account credentials.</p>
+
+<p><code><pre>
+   $dm_configs = array
+  (
+    'default' =&gt; array
+    (
+      'username' =&gt; '<b>digital measures webservices account username goes here</b>',
+      'password' =&gt; '<b>password goes here</b>',
+      'key' =&gt; '<b>University key</b>'
+    )
+  );
+</pre></code></p>
+
+<p>Enable the plugin in the plugin page of the admin section.</p>
+
+<h2>
+<a id="shortcode-for-publications" class="anchor" href="#shortcode-for-publications" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Shortcode for Publications</h2>
+
+<p><code>[digitalmeasures username="epanther" published_only="true" profile_only="false" limit="5" instance="default" format="apa"]</code></p>
+
+<ul>
+<li>
+<em>username</em> should be the username in Digital Measures for the faculty member.</li>
+<li>
+<em>type</em> is optional. The default is "publication".</li>
+<li>
+<em>published_only</em> is optional. The default is "no", and will limit publications listed to those with a status of published.</li>
+<li>
+<em>profile_only</em> is optional. The default is "yes", and will limit publications listed to those where "show on faculty profile page" in Digital Measures is set to "yes".</li>
+<li>
+<em>limit</em> is optional. The default is "0" which lists all matching publications, otherwise this is the maximum number of publications to list.</li>
+<li>
+<em>instance</em> is optional. This will choose which instance of Digital Meausres to pull from. These are setup in the config.inc.php file.</li>
+<li>
+<em>format</em> is optional. This decides which citation standard to use. Options are "mla" for MLA style or "apa" for APA style. The default style is MLA.</li>
+<li>
+<em>authors</em> is optional. If present this will limit the authors in the following way:
+
+<ul>
+<li>If the number of authors on the publication is less than this value, all authors are shown.</li>
+<li>If the number of authors on the publication is one more than all authors, all authors are shown.</li>
+<li>If the number of authors on the publication is two or more larger than authors, this number of authors will be shown followed by "and others" in MLA or "et. al" in APA.</li>
+</ul>
+</li>
+<li>
+<em>cache</em> is optional. If supplied, it will override the "Cache Length" value entered in on the Digital Measures Settings page for the data retrieved by this instance of the shortcode.</li>
+<li>
+<em>unpublished_text</em> is optional. If supplied, it will override the "Alternate Text for Unpublished Works" value entered in on the Digital Measures Settings page for the data retrieved by this instance of the shortcode.</li>
+</ul>
+
+<h2>
+<a id="shortcode-for-education" class="anchor" href="#shortcode-for-education" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Shortcode for Education</h2>
+
+<p><code>[digitalmeasures type="education" username="epanther" show_location="true" show_dates="range"]</code></p>
+
+<p><code>[digitalmeasures type="education" username="epanther" show_dates="true"]</code></p>
+
+<ul>
+<li>
+<em>username</em> should be the username in Digital Measures for the faculty member.</li>
+<li>
+<em>type</em> should be "education" to show the education of a faculty member.</li>
+<li>
+<em>show_location</em> is optional. This controls showing or not showing the locations (city and state) of the university the degree was earned at. The default is "false".</li>
+<li>
+<em>show_dates</em> is optional. This controls if and how the dates of the degree are shown. The default is "false".
+
+<ul>
+<li>
+<em>true</em> shows the completion date only.</li>
+<li>
+<em>range</em> shows the start and end dates for the degrees.</li>
+<li>
+<em>false</em> doesn't show the dates at all.</li>
+</ul>
+</li>
+</ul>
+
+<h2>
+<a id="shortcode-for-presentations" class="anchor" href="#shortcode-for-presentations" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Shortcode for Presentations</h2>
+
+<p><code>[digitalmeasures type="presentations" username="epanther" profile_only="false" limit="5" instance="default" format="apa"]</code></p>
+
+<ul>
+<li>
+<em>username</em> should be the username in Digital Measures for the faculty member.</li>
+<li>
+<em>type</em> should be "presentations" to show presentations.</li>
+<li>
+<em>profile_only</em> is optional. The default is "yes", and will limit presentations listed to those where "show on faculty profile page" in Digital Measures is set to "yes".</li>
+<li>
+<em>limit</em> is optional. The default is "0" which lists all matching presentations, otherwise this is the maximum number of presentations to list.</li>
+<li>
+<em>instance</em> is optional. This will choose which instance of Digital Measures to pull from. These are setup in the config.inc.php file.</li>
+<li>
+<em>format</em> is optional. This decides which citation standard to use. Options are "mla" for MLA style or "apa" for APA style, default is MLA.</li>
+<li>
+<em>authors</em> is optional. If present this will limit the authors in the following way:
+
+<ul>
+<li>If the number of authors on the presentation is less than this value, all authors are shown.</li>
+<li>If the number of authors on the presentation is one more than all authors, all authors are shown.</li>
+<li>If the number of authors on the presentation is two or more larger than authors, this number of authors will be shown followed by "and others" in MLA or "et. al" in APA.</li>
+</ul>
+</li>
+</ul>
+
+<h2>
+<a id="shortcode-for-awards-and-honors" class="anchor" href="#shortcode-for-awards-and-honors" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Shortcode for Awards and Honors</h2>
+
+<p><code>[digitalmeasures type="awards" username="epanther"]</code></p>
+
+<ul>
+<li>
+<em>username</em> should be the username in Digital Measures for the faculty member.</li>
+<li>
+<em>type</em> should be "awards" to show awards.</li>
+<li>
+<em>limit</em> is optional. The default is "0" which lists all awards, otherwise this is the maximum number of awards to list.</li>
+</ul>
+
+<h2>
+<a id="shortcode-for-current-research" class="anchor" href="#shortcode-for-current-research" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Shortcode for Current Research</h2>
+
+<p><code>[digitalmeasures type="current_research" username="epanther"]</code></p>
+
+<ul>
+<li>
+<em>username</em> should be the username in Digital Measures for the faculty member.</li>
+<li>
+<em>type</em> should be "current_research" to show current research.</li>
+<li>
+<em>limit</em> is optional. The default is "0" which lists all research, otherwise this is the maximum number of items to list.</li>
+</ul>
+
+<h2>
+<a id="shortcode-for-contracts-and-grants" class="anchor" href="#shortcode-for-contracts-and-grants" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Shortcode for Contracts and Grants</h2>
+
+<p><code>[digitalmeasures type="grants" username="epanther"]</code></p>
+
+<ul>
+<li>
+<em>username</em> should be the username in Digital Measures for the faculty member.</li>
+<li>
+<em>type</em> should be "grants" to show grants.</li>
+<li>
+<em>limit</em> is optional. The default is "0" which lists all grants, otherwise this is the maximum number of grants to list.</li>
+</ul>
+        </section>
+
+        <footer>
+          Digital Measures WordPress Plugin is maintained by <a href="https://github.com/jastreich">jastreich</a><br>
+          This page was generated by <a href="https://pages.github.com">GitHub Pages</a>. Tactile theme by <a href="https://twitter.com/jasonlong">Jason Long</a>.
+        </footer>
+
+        
+      </div>
+    </div>
+  </body>
+</html>
