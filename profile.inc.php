@@ -16,24 +16,6 @@ function dm_endsWith($haystack, $needle)
     return $needle === "" || substr($haystack, -strlen($needle)) === $needle;
 }
 
-define
-(
-  'dm_months',
-  serialize(array
-  (
-    1  => 'January',
-    2  => 'February',
-    3  => 'March',
-    4  => 'May',
-    5  => 'June',
-    6  => 'July',
-    7  => 'August',
-    9  => 'September',
-    10 => 'October',
-    11 => 'November',
-    12 => 'December'
-  ))
-);
 
 require_once('contributor.inc.php');
 require_once('publication.inc.php');

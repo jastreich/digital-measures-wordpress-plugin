@@ -51,13 +51,16 @@ class presentation
     }
 
     // title
-    if('html' == $type)
+    if($this->title)
     {
-      $cite .= '&ldquo;' . htmlentities(str_replace('"',"'",$this->title)) . '.&rdquo; ';
-    }
-    else
-    {
-      $cite .= '"' . str_replace('"',"'",$this->title) . '." ';
+      if('html' == $type)
+      {
+        $cite .= '&ldquo;' . htmlentities(str_replace('"',"'",$this->title)) . '.&rdquo; ';
+      }
+      else
+      {
+        $cite .= '"' . str_replace('"',"'",$this->title) . '." ';
+      }
     }
 
     // conference
@@ -91,7 +94,10 @@ class presentation
   {
     $cite = apa_contribs($this->authors,$type,$authors) . ' ';
     $cite .= ($this->year != '' ? '(' . ($this->month != '' ? $this->month . ' ' : '') . $this->year . '). ' : '. ');
-    $cite .= ($type == 'html' ? htmlentities($this->title) : $this->title) . '. ';
+    if($this->title)
+    {
+      $cite .= ($type == 'html' ? htmlentities($this->title) : $this->title) . '. ';
+    }
     $cite .= ($type == 'html' ? htmlentities($this->conference . ', ' . $this->location) : $this->conference . ', ' . $this->location) . '.';
     return $cite;
   }

@@ -7,4 +7,4 @@
   .degree > .withafter:after{content:','}
   .degree > *{white-space:nowrap}
   .degree:last-child{margin-bottom:1em;}
-
+  .pub-meta-school:after{content:','}

@@ -64,12 +64,40 @@
    **/
    DEFINE('DM_INSTANCE','default');
 
+
+define
+(
+  'dm_months',
+  serialize(array
+  (
+    1  => 'January',
+    2  => 'February',
+    3  => 'March',
+    4  => 'May',
+    5  => 'June',
+    6  => 'July',
+    7  => 'August',
+    9  => 'September',
+    10 => 'October',
+    11 => 'November',
+    12 => 'December'
+  ))
+);
+
+
   // register the shortcode
   add_shortcode("digitalmeasures","digitalmeasures_handler");
+  add_shortcode("digitalmeasures_list","digitalmeasures_list_handler");
 
   // Add the CSS to the head of the document
   add_action('wp_enqueue_scripts','digitalmeasures_load_style');
-
+if(!function_exists('mb_convert_encoding'))
+{
+  function mb_convert_encoding($str,$a = '',$b='',$c='',$d='')
+  {
+    return $str;
+  }
+}
 
   function digitalmeasures_load_style()
   {
@@ -237,23 +265,71 @@
     }
   }
 
-function dm_create_menu()
-{
-  add_submenu_page('options-general.php','Digital Measures Shortcodes','Digital Measures','manage_options','dm_settings','dm_settings_page');
-  add_action( 'admin_init', 'register_dm_settings' );
-}
 
 
-function register_dm_settings()
-{
-  register_setting('dm-settings-group', 'dm_unpublished_text');
-  register_setting('dm-settings-group', 'dm_cache_length');
-  register_setting('dm-settings-group', 'dm_format');
-  register_setting('dm-settings-group', 'dm_limit');
-  register_setting('dm-settings-group', 'dm_published_only');
-  register_setting('dm-settings-group', 'dm_profile_only');
-  register_setting('dm-settings-group', 'dm_authors');
-}
+ /**
+   * Function used to handle shortcode.
+   * @param array $incomingfrompost the array WordPress passes to shortcodes
+   * 
+   * @return string The digital measures data.
+   **/
+  function digitalmeasures_list_handler($incomingfrompost)
+  {
+
+    $args = shortcode_atts
+    (
+       array
+       (
+          'format' => 'apa',
+          'college' => '',
+          'dept' => '',
+          'days' => '30',
+          'show_meta' => true
+       ),
+       $incomingfrompost
+    );
+    require_once('publications_list.inc.php');
+    require_once('config.inc.php');
+
+    $pw = new publications_list($dm_configs['default'],$args['days']);
+    $ret = '';
+    if('mla' == $args['format']) 
+    {
+      //public function mla($type = 'html', $only_published = false,$only_profile = false,$limit = 0,$authors = null,$unpublished = '',$strict = false,$college=null,$dept=null,$show_meta=true)
+      $ret = $pw->mla('html',true,false,0,null,'',false,$args['college'],$args['dept'],($args['show_meta'] === 'true' || $args['show_meta'] === true || $args['show_meta'] === 'yes'));
+    }
+    else if('mla' == $args['format']) 
+    {
+      //public function mla($type = 'html', $only_published = false,$only_profile = false,$limit = 0,$authors = null,$unpublished = '',$strict = false,$college=null,$dept=null,$show_meta=true)
+      $ret = $pw->mla('html',true,false,0,null,'',true,$args['college'],$args['dept'],($args['show_meta'] === 'true' || $args['show_meta'] === true || $args['show_meta'] === 'yes'));
+    }
+    else if('apa' == $args['format'])
+    {
+      //function apa($type = 'html', $only_published = false,$only_profile = false,$limit = 0,$authors = null,$unpublished = '',$college=null,$dept=null,$show_meta=true)
+      $ret = $pw->apa('html',true,false,0,null,'',$args['college'],$args['dept'],($args['show_meta'] === 'true' || $args['show_meta'] === true || $args['show_meta'] === 'yes'));
+    }
+
+    return $ret;
+  }
+
+
+  function dm_create_menu()
+  {
+    add_submenu_page('options-general.php','Digital Measures Shortcodes','Digital Measures','manage_options','dm_settings','dm_settings_page');
+    add_action( 'admin_init', 'register_dm_settings' );
+  }
+
+
+  function register_dm_settings()
+  {
+    register_setting('dm-settings-group', 'dm_unpublished_text');
+    register_setting('dm-settings-group', 'dm_cache_length');
+    register_setting('dm-settings-group', 'dm_format');
+    register_setting('dm-settings-group', 'dm_limit');
+    register_setting('dm-settings-group', 'dm_published_only');
+    register_setting('dm-settings-group', 'dm_profile_only');
+    register_setting('dm-settings-group', 'dm_authors');
+  }
 
 
 function dm_settings_page()
@@ -415,7 +491,15 @@ function dm_settings_page()
     <li><em>limit</em> is optional. The default is "0" which lists all grants, otherwise this is the maximum number of grants to list.</li>
 </ul>
 
-
+<h4 id="shortcode-for-lists">List Recent Publications</h4>
+<p><code>[digitalmeasures_list format="apa" college="College" department="Department" days="30" show_meta="true" ]</code></p>
+<ul style="list-style-type: square;padding-left:20px;">
+  <li><em>format</em> is optional. This decides which citation standard to use. Options are "mla" for MLA style or "apa" for APA style. Default is MLA.</li>
+  <li><em>college</em> is optional. Filter only this school or college.</li>
+  <li><em>department</em> is optional. Filter only this department.</li>
+  <li><em>days</em> is optional. The number of days to return. Default is 30.</li>
+  <li><em>show_meta</em> is optional. To output the school/college and department above each publication. Default is <code>true</code>.</li>
+<ul>
 
 </div>
 <?php

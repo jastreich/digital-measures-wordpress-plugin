@@ -30,6 +30,7 @@ class publication
   public $pub_month;
   public $pub_year;
   public $link;
+  public $meta;
 
   /**
    * Constructor for the publication object.
@@ -586,7 +587,24 @@ function pub_cmp($a, $b)
 {
   if($a->get_year() == $b->get_year())
   {
-    return 0;
+    $a_month = array_search($a->pub_month,unserialize(dm_months));
+    $b_month = array_search($b->pub_month,unserialize(dm_months));
+    if($a_month == $b_month)
+    {
+      if(!$a->pub_day)
+      {
+        return -1;
+      }
+      else if(!$b->pub_day)
+      {
+        return 1;
+      }
+
+      return ($a->pub_day - $b->pub_day) * -1;
+    }
+    else {
+      return ($a_month - $b_month) * -1;
+    }
   }
   else if('' == $a->get_year())
   {
@@ -609,4 +627,3 @@ function ed_cmp($a,$b)
   return strcmp($a->get_completed(),$b->get_completed());
 
 }
-?>

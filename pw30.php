@@ -21,7 +21,7 @@ if(!function_exists('mb_convert_encoding'))
     return $str;
   }
 }
-$pw = new publications_list($dm_configs['default'],5);
+$pw = new publications_list($dm_configs['default'],30);
 echo $pw->mla('html',true);
 
 
