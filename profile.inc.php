@@ -132,7 +132,11 @@ class profile
         $a = array();
         foreach($pub->INTELLCONT_AUTH as $author)
         {
-          $a[] = new contributor($author->FNAME,$author->MNAME,$author->LNAME);
+          if($author->ROLE == 'Author') {
+            $a[] = new contributor($author->FNAME,$author->MNAME,$author->LNAME);
+          } else {
+            $e[] = new contributor($editor->FNAME,$editor->MNAME,$editor->LNAME);
+          }
         }
         $e = array();
         foreach($pub->INTELLCONT_EDITOR as $editor)
