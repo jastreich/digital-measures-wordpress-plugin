@@ -16,6 +16,27 @@ function dm_endsWith($haystack, $needle)
     return $needle === "" || substr($haystack, -strlen($needle)) === $needle;
 }
 
+if(!defined('dm_months'))
+{
+  define
+  (
+    'dm_months',
+    serialize(array
+    (
+      1  => 'January',
+      2  => 'February',
+      3  => 'March',
+      4  => 'May',
+      5  => 'June',
+      6  => 'July',
+      7  => 'August',
+      9  => 'September',
+      10 => 'October',
+      11 => 'November',
+      12 => 'December'
+    ))
+  );
+}
 
 require_once('contributor.inc.php');
 require_once('publication.inc.php');
@@ -66,7 +87,7 @@ class profile
 
     $ret = '';
 
-    $ch = curl_init('https://www.digitalmeasures.com/login/service/v4/UserSchema/USERNAME:' . $u . '/INDIVIDUAL-ACTIVITIES-' . $config['key']);
+    $ch = curl_init('https://webservices.digitalmeasures.com/login/service/v4/UserSchema/USERNAME:' . $u . '/INDIVIDUAL-ACTIVITIES-' . $config['key']);
     curl_setopt($ch, CURLOPT_HEADER, 0);
     curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, 0);
@@ -130,15 +151,16 @@ class profile
       {
         $attrs = $pub->attributes();
         $a = array();
+        $e = array();
         foreach($pub->INTELLCONT_AUTH as $author)
         {
           if($author->ROLE == 'Author') {
             $a[] = new contributor($author->FNAME,$author->MNAME,$author->LNAME);
           } else {
-            $e[] = new contributor($editor->FNAME,$editor->MNAME,$editor->LNAME);
+            $e[] = new contributor($author->FNAME,$author->MNAME,$author->LNAME);
           }
         }
-        $e = array();
+
         foreach($pub->INTELLCONT_EDITOR as $editor)
         {
           $e[] = new contributor($editor->FNAME,$editor->MNAME,$editor->LNAME);
