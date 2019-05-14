@@ -92,7 +92,7 @@ class publications_list
     $start = date("Y-m-d", strtotime("-{$days} day"));
     //echo ('<h1>' . $start . '</h1>');
     //echo('<h1>' . $end->format('Y-m-d') . '</h1>');
-    $ch = curl_init('https://www.digitalmeasures.com/login/service/v4/SchemaData/INDIVIDUAL-ACTIVITIES-' . $config['key'] . '/INTELLCONT?start=' . $start . '&endDate=' . $end->format('Y-m-d') . '&end=' . $end->format('Y-m-d'));
+    $ch = curl_init('https://webservices.digitalmeasures.com/login/service/v4/SchemaData/INDIVIDUAL-ACTIVITIES-' . $config['key'] . '/INTELLCONT?start=' . $start . '&endDate=' . $end->format('Y-m-d') . '&end=' . $end->format('Y-m-d'));
     curl_setopt($ch, CURLOPT_HEADER, 0);
     curl_setopt ($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt ($ch, CURLOPT_CONNECTTIMEOUT, 0);

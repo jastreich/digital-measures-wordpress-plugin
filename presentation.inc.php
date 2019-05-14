@@ -33,7 +33,7 @@ class presentation
     $this->location = trim($location);
     $this->month = trim($month);
     $this->year = trim($year);
-    $this->profile = trim($profile);
+    $this->profile = (trim($profile) === 'Yes' || trim($profile) === 'Y' ? true : false);
   }
 
   /**
