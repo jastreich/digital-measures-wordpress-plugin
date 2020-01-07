@@ -291,7 +291,20 @@ if(!function_exists('mb_convert_encoding'))
     require_once('publications_list.inc.php');
     require_once('config.inc.php');
 
-    $pw = new publications_list($dm_configs['default'],$args['days']);
+    $pw = get_transient('dm_' . $args['college'] . '_' . $args['dept'] . '_' . $args['days']);
+    if($pw === false){
+      $pw = new publications_list($dm_configs['default'],$args['days']);
+      set_transient('dm_' . $args['college'] . '_' . $args['dept'] . '_' . $args['days'],$pw,$args['cache'] * 60);      
+    }
+    $trans = get_transient('dm_transients');
+    if(!$trans)
+    {
+      $trans = array();
+    }
+    $trans[] = 'dm_' . $args['college'] . '_' . $args['dept'] . '_' . $args['days'];
+    set_transient('dm_transients',$trans, $args['cache'] * 60);
+
+
     $ret = '';
     if('mla' == $args['format']) 
     {
